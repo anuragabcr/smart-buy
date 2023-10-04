@@ -11,8 +11,8 @@ datasource db {
 }
 
 model Product {
-  id            String  @id @default(auto()) @map("_id") @db.ObjectId
-  url           String  @unique
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  url           String   @unique
   currency      String
   image         String
   title         String
@@ -27,12 +27,6 @@ model Product {
   category      String?
   reviewsCount  Int?
   stars         Float?
-  isOutOfStock  Boolean @default(false)
-  users         User[]
-}
-
-model User {
-  email     String   @id @map("_id")
-  Product   Product? @relation(fields: [productId], references: [id])
-  productId String?  @db.ObjectId
+  isOutOfStock  Boolean  @default(false)
+  users         String[]
 }
