@@ -51,35 +51,39 @@ export function extractDescription($: any) {
   return "";
 }
 
-export function getHighestPrice(priceList: PriceHistoryItem[]) {
+export function getHighestPrice(priceList: Number[]) {
   let highestPrice = priceList[0];
 
   for (let i = 0; i < priceList.length; i++) {
-    if (priceList[i].price > highestPrice.price) {
+    if (priceList[i] > highestPrice) {
       highestPrice = priceList[i];
     }
   }
 
-  return highestPrice.price;
+  return Number(highestPrice);
 }
 
-export function getLowestPrice(priceList: PriceHistoryItem[]) {
+export function getLowestPrice(priceList: Number[] | PriceHistoryItem[]) {
   let lowestPrice = priceList[0];
 
   for (let i = 0; i < priceList.length; i++) {
-    if (priceList[i].price < lowestPrice.price) {
+    if (priceList[i] < lowestPrice) {
       lowestPrice = priceList[i];
     }
   }
 
-  return lowestPrice.price;
+  return Number(lowestPrice);
 }
 
-export function getAveragePrice(priceList: PriceHistoryItem[]) {
-  const sumOfPrices = priceList.reduce((acc, curr) => acc + curr.price, 0);
-  const averagePrice = sumOfPrices / priceList.length || 0;
+export function getAveragePrice(priceList: Number[]) {
+  const sumOfPrices = priceList.reduce(
+    (acc, curr) => Number(acc) + Number(curr),
+    0
+  );
+  const averagePrice = (Number(sumOfPrices) /
+    (priceList.length || 0)) as number;
 
-  return averagePrice;
+  return Number(averagePrice);
 }
 
 export const getEmailNotifType = (
@@ -88,7 +92,7 @@ export const getEmailNotifType = (
 ) => {
   const lowestPrice = getLowestPrice(currentProduct.priceHistory);
 
-  if (scrapedProduct.currentPrice < lowestPrice) {
+  if (scrapedProduct.currentPrice < Number(lowestPrice)) {
     return Notification.LOWEST_PRICE as keyof typeof Notification;
   }
   if (!scrapedProduct.isOutOfStock && currentProduct.isOutOfStock) {

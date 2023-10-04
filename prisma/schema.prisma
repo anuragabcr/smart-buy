@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  url           String  @unique
+  currency      String
+  image         String
+  title         String
+  currentPrice  Float
+  originalPrice Float
+  priceHistory  Float[]
+  lowestPrice   Float?
+  highestPrice  Float?
+  averagePrice  Float?
+  discountRate  Float?
+  description   String?
+  category      String?
+  reviewsCount  Int?
+  stars         Float?
+  isOutOfStock  Boolean @default(false)
+  users         User[]
+}
+
+model User {
+  email     String   @id @map("_id")
+  Product   Product? @relation(fields: [productId], references: [id])
+  productId String?  @db.ObjectId
+}
