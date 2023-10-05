@@ -1,6 +1,7 @@
 "use client";
 
 import { scrapeAndStoreProduct } from "@/lib/actions";
+import { Product } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { useState, FormEvent } from "react";
 
@@ -31,7 +32,8 @@ const Searchbar = () => {
     try {
       setIsLoading(true);
 
-      await scrapeAndStoreProduct(search);
+      const product = await scrapeAndStoreProduct(search);
+      if (product) window.location.href = `/products/${product.id}`;
     } catch (error) {
       console.log(error);
     } finally {

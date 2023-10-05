@@ -1,4 +1,5 @@
-import { PriceHistoryItem, Product } from "@/types";
+import { PriceHistoryItem } from "@/types";
+import { Product } from "@prisma/client";
 
 const Notification = {
   WELCOME: "WELCOME",
@@ -98,7 +99,7 @@ export const getEmailNotifType = (
   if (!scrapedProduct.isOutOfStock && currentProduct.isOutOfStock) {
     return Notification.CHANGE_OF_STOCK as keyof typeof Notification;
   }
-  if (scrapedProduct.discountRate >= THRESHOLD_PERCENTAGE) {
+  if (scrapedProduct?.discountRate || 0 >= THRESHOLD_PERCENTAGE) {
     return Notification.THRESHOLD_MET as keyof typeof Notification;
   }
 

@@ -1,6 +1,5 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import prismadb from "../prisma";
 import { scrapeAmazonProduct } from "../scraper";
 import { getAveragePrice, getHighestPrice, getLowestPrice } from "../utils";
@@ -48,7 +47,7 @@ export async function scrapeAndStoreProduct(url: string) {
   } catch (error: any) {
     throw new Error(`Failed to create/update product:- ${error.message}`);
   }
-  redirect(`/products/${product.id}`);
+  return product;
 }
 
 export async function getProductById(productId: string) {
